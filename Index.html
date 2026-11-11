@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="es" class="h-full bg-slate-950 text-slate-100">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NASA Official Store - Apparel & Gear</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        nasa: {
+                            blue: '#0B3D91',
+                            red: '#FC3D21',
+                            brightBlue: '#00D8FF',
+                            dark: '#030712',
+                            card: '#0f172a'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
+    <style>
+        .font-orbitron { font-family: 'Orbitron', sans-serif; }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #090d16;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00D8FF;
+        }
+
+        /* Invoice Print Styling */
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            #invoiceModal, #invoiceModal * {
+                visibility: visible;
+            }
+            #invoiceModal {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                background: white !important;
+                color: black !important;
+            }
+            .no-print {
+                display: none !important;
+            }
+        }
+
+        .stars-bg {
+            background-image: 
+                radial-gradient(2px 2px at 20px 30px, #eee, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 40px 70px, #fff, rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 90px 40px, #fff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 160px 120px, #ddd, rgba(0,0,0,0));
+            background-repeat: repeat;
+            background-size: 200px 200px;
+        }
+    </style>
+</head>
+<body class="h-full flex flex-col font-sans stars-bg selection:bg-nasa-brightBlue selection:text-black">
+
+    <!-- HEADER / NAVIGATION (Fixed Header with Backdrop Blur) -->
+    <header class="fixed top-0 left-0 right-0 z-40 backdrop-blur-md bg-slate-950/90 border-b border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                
+                <!-- Logo -->
+                <a href="#" class="flex items-center gap-3">
+                    <div class="w-12 h-12 rounded-full bg-nasa-blue flex items-center justify-center border border-nasa-brightBlue/50 shadow-lg shadow-nasa-blue/50">
+                        <span class="font-orbitron font-black text-white text-lg tracking-wider">NASA</span>
+                    </div>
+                    <div>
+                        <span class="font-orbitron font-bold text-lg sm:text-xl tracking-widest text-white block">SPACE GEAR</span>
+                        <span class="text-[10px] sm:text-xs text-nasa-brightBlue tracking-widest uppercase">Official Store - Univ Project</span>
+                    </div>
+                </a>
+
+                <!-- Navigation Links / Info -->
+                <div class="hidden md:flex items-center space-x-6 text-sm font-medium">
+                    <a href="#catalogo" class="hover:text-nasa-brightBlue transition">Catálogo</a>
+                    <button onclick="openBot()" class="hover:text-nasa-brightBlue transition flex items-center gap-2 bg-slate-900 border border-slate-800 px-3 py-1.5 rounded-xl">
+                        <i class="fa-solid fa-robot text-nasa-brightBlue"></i> Asistente AstroBot
+                    </button>
+                </div>
+
+                <!-- Cart Icon Button -->
+                <button onclick="toggleCart()" class="relative p-2.5 rounded-xl bg-slate-900 border border-slate-800 hover:border-nasa-brightBlue transition group">
+                    <i class="fa-solid fa-cart-shopping text-xl text-slate-300 group-hover:text-nasa-brightBlue"></i>
+                    <span id="cartCount" class="absolute -top-1.5 -right-1.5 bg-nasa-red text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center shadow-md">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- HERO BANNER (Padding top added to prevent header overlap) -->
+    <section class="relative overflow-hidden bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 pt-28 pb-16 border-b border-slate-800/80">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center max-w-3xl mx-auto">
+                <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-nasa-blue/40 border border-nasa-brightBlue/30 text-nasa-brightBlue mb-4">
+                    Colección Oficial Artemis & Apollo
+                </span>
+                <h1 class="font-orbitron text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white mb-6 leading-tight">
+                     <br class="hidden sm:inline" /><span class="text-transparent bg-clip-text bg-gradient-to-r from-nasa-brightBlue via-blue-400 to-nasa-red"></span>
+                </h1>
+                <p class="text-slate-400 text-base sm:text-lg mb-8 leading-relaxed max-w-2xl mx-auto">
+                    Indumentaria y calzado con licencia oficial inspirados en la exploración espacial. Diseñado con estándares tácticos y estéticos universitarios.
+                </p>
+                <div class="flex justify-center gap-4">
+                    <a href="#catalogo" class="px-6 py-3.5 rounded-xl font-bold bg-nasa-blue hover:bg-blue-700 text-white shadow-lg shadow-nasa-blue/40 transition flex items-center gap-2">
+                        Ver Productos <i class="fa-solid fa-arrow-down"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MAIN CONTENT AREA -->
+    <main class="flex-grow max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-12" id="catalogo">
+        
+        <!-- FILTER BUTTONS -->
+        <div class="flex flex-col lg:flex-row items-center justify-between gap-6 mb-10">
+            <h2 class="font-orbitron text-2xl font-bold text-white flex items-center gap-3">
+                <i class="fa-solid fa-rocket text-nasa-red"></i> Catálogo de Productos
+            </h2>
+            
+            <div class="flex flex-wrap justify-center gap-2 bg-slate-900/90 p-2 rounded-2xl border border-slate-800">
+                <button onclick="filterProducts('all')" class="filter-btn active px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition bg-nasa-blue text-white" data-filter="all">Todos</button>
+                <button onclick="filterProducts('ropa')" class="filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold text-slate-400 hover:text-white transition" data-filter="ropa">Solo Ropa</button>
+                <button onclick="filterProducts('playera')" class="filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold text-slate-400 hover:text-white transition" data-filter="playera">Playeras</button>
+                <button onclick="filterProducts('pantalon')" class="filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold text-slate-400 hover:text-white transition" data-filter="pantalon">Pantalones</button>
+                <button onclick="filterProducts('calzado')" class="filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold text-slate-400 hover:text-white transition" data-filter="calzado">Calzado</button>
+                <button onclick="filterProducts('accesorios')" class="filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold text-slate-400 hover:text-white transition" data-filter="accesorios">Chaquetas / Accesorios</button>
+            </div>
+        </div>
+
+        <!-- PRODUCTS GRID -->
+        <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <!-- Dynamically populated via JS -->
+        </div>
+    </main>
+
+    <!-- CART SIDEBAR MODAL -->
+    <div id="cartModal" class="fixed inset-0 z-50 invisible opacity-0 transition-all duration-300">
+        <div onclick="toggleCart()" class="absolute inset-0 bg-slate-950/80 backdrop-blur-sm"></div>
+        <div class="absolute right-0 top-0 bottom-0 w-full max-w-md bg-slate-900 border-l border-slate-800 shadow-2xl flex flex-col justify-between">
+            
+            <!-- Cart Header -->
+            <div class="p-6 border-b border-slate-800 flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-basket-shopping text-nasa-brightBlue text-xl"></i>
+                    <h3 class="font-orbitron font-bold text-lg text-white">Tu Cesta Espacial</h3>
+                </div>
+                <button onclick="toggleCart()" class="text-slate-400 hover:text-white p-2">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+            </div>
+
+            <!-- Cart Items List -->
+            <div id="cartItemsList" class="flex-grow overflow-y-auto p-6 space-y-4">
+                <!-- Dynamically Populated -->
+            </div>
+
+            <!-- Cart Footer / Summary -->
+            <div class="p-6 border-t border-slate-800 bg-slate-950/50 space-y-3">
+                <div class="flex justify-between text-sm text-slate-400">
+                    <span>Subtotal:</span>
+                    <span id="cartSubtotal" class="font-semibold text-white">$0.00 MXN</span>
+                </div>
+                <div class="flex justify-between text-sm text-slate-400">
+                    <span>IVA (16%):</span>
+                    <span id="cartTax" class="font-semibold text-white">$0.00 MXN</span>
+                </div>
+                <div class="flex justify-between text-lg font-bold text-white pt-2 border-t border-slate-800">
+                    <span>Total Final:</span>
+                    <span id="cartTotal" class="text-nasa-brightBlue">$0.00 MXN</span>
+                </div>
+
+                <button id="btnProceedToPay" onclick="openCheckout()" class="w-full mt-4 py-3 bg-nasa-red hover:bg-red-600 font-bold rounded-xl text-white shadow-lg shadow-nasa-red/30 transition disabled:opacity-50 disabled:cursor-not-allowed">
+                    Proceder al Pago <i class="fa-solid fa-arrow-right ml-1"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- CHECKOUT MODAL -->
+    <div id="checkoutModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md">
+        <div class="bg-slate-900 border border-slate-800 w-full max-w-xl rounded-2xl p-6 sm:p-8 max-h-[90vh] overflow-y-auto shadow-2xl">
+            
+            <div class="flex justify-between items-center mb-6 border-b border-slate-800 pb-4">
+                <h3 class="font-orbitron font-bold text-xl text-white flex items-center gap-2">
+                    <i class="fa-solid fa-credit-card text-nasa-brightBlue"></i> Pago Seguro NASA
+                </h3>
+                <button onclick="closeCheckout()" class="text-slate-400 hover:text-white">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+            </div>
+
+            <!-- Auto Fill Random Data Button -->
+            <div class="mb-6 bg-slate-800/60 border border-slate-700/60 p-4 rounded-xl flex items-center justify-between gap-4">
+                <div>
+                    <h4 class="text-xs font-bold text-nasa-brightBlue uppercase tracking-wider">Proyecto Universitario</h4>
+                    <p class="text-xs text-slate-400">Genera datos aleatorios rápidos para probar el flujo.</p>
+                </div>
+                <button type="button" onclick="fillRandomData()" class="px-3 py-2 bg-slate-700 hover:bg-slate-600 text-xs font-semibold text-white rounded-lg transition flex items-center gap-1.5 shrink-0">
+                    <i class="fa-solid fa-wand-magic-sparkles text-nasa-brightBlue"></i> Datos Aleatorios
+                </button>
+            </div>
+
+            <form id="checkoutForm" onsubmit="processPayment(event)" class="space-y-4">
+                
+                <!-- Payment Method Selection -->
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Método de Pago</label>
+                    <div class="grid grid-cols-2 gap-3">
+                        <label class="cursor-pointer">
+                            <input type="radio" name="paymentType" value="Tarjeta de Débito" checked class="peer hidden">
+                            <div class="p-3 border border-slate-700 rounded-xl text-center peer-checked:border-nasa-brightBlue peer-checked:bg-nasa-blue/20 text-slate-300 peer-checked:text-white transition">
+                                <i class="fa-solid fa-credit-card mb-1 block"></i>
+                                <span class="text-xs font-semibold">Débito</span>
+                            </div>
+                        </label>
+                        <label class="cursor-pointer">
+                            <input type="radio" name="paymentType" value="Tarjeta de Crédito" class="peer hidden">
+                            <div class="p-3 border border-slate-700 rounded-xl text-center peer-checked:border-nasa-brightBlue peer-checked:bg-nasa-blue/20 text-slate-300 peer-checked:text-white transition">
+                                <i class="fa-solid fa-building-columns mb-1 block"></i>
+                                <span class="text-xs font-semibold">Crédito</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Full Name -->
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">Nombre Completo del Titular</label>
+                    <input type="text" id="cardName" required placeholder="Ej. Juan Pérez Astronauta" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-sm text-white focus:outline-none focus:border-nasa-brightBlue">
+                </div>
+
+                <!-- Card Number -->
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">Número de Tarjeta</label>
+                    <input type="text" id="cardNumber" required maxlength="19" placeholder="4532 8912 3456 7890" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-sm text-white focus:outline-none focus:border-nasa-brightBlue">
+                </div>
+
+                <!-- Exp & CVV -->
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">Fecha Expiración</label>
+                        <input type="text" id="cardExp" required placeholder="MM/AA" maxlength="5" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-sm text-white focus:outline-none focus:border-nasa-brightBlue">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">CVV</label>
+                        <input type="password" id="cardCVV" required maxlength="4" placeholder="123" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-sm text-white focus:outline-none focus:border-nasa-brightBlue">
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="w-full py-3.5 bg-nasa-blue hover:bg-blue-600 font-bold text-white rounded-xl shadow-lg shadow-nasa-blue/40 transition mt-4">
+                    Pagar y Generar Factura <i class="fa-solid fa-file-invoice flex-inline ml-2"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- INVOICE MODAL -->
+    <div id="invoiceModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-slate-950/90 backdrop-blur-md">
+        <div class="bg-white text-slate-900 w-full max-w-2xl rounded-2xl p-8 max-h-[90vh] overflow-y-auto shadow-2xl relative">
+            
+            <!-- Header buttons -->
+            <div class="no-print flex justify-end gap-2 mb-4 border-b pb-4">
+                <button onclick="window.print()" class="px-4 py-2 bg-slate-900 text-white rounded-xl text-sm font-semibold hover:bg-slate-800 transition flex items-center gap-2">
+                    <i class="fa-solid fa-print"></i> Imprimir Factura
+                </button>
+                <button onclick="closeInvoice()" class="px-4 py-2 bg-slate-200 text-slate-700 rounded-xl text-sm font-semibold hover:bg-slate-300 transition">
+                    Cerrar
+                </button>
+            </div>
+
+            <!-- Invoice Content -->
+            <div id="invoiceContent" class="space-y-6">
+                <!-- Dynamically populated via JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- ASTROBOT FLOATING CHATBOT ASSISTANT -->
+    <div class="fixed bottom-6 right-6 z-50">
+        <!-- Floating trigger button -->
+        <button id="chatToggle" onclick="toggleBot()" class="w-14 h-14 bg-nasa-blue hover:bg-blue-600 text-white rounded-full flex items-center justify-center shadow-xl shadow-nasa-blue/50 border border-nasa-brightBlue transition-transform transform hover:scale-105">
+            <i class="fa-solid fa-headset text-2xl"></i>
+        </button>
+
+        <!-- Interactive Chat Window -->
+        <div id="botWindow" class="hidden absolute bottom-16 right-0 w-80 sm:w-96 bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl flex flex-col h-96 overflow-hidden">
+            <!-- Header -->
+            <div class="bg-slate-950 p-4 border-b border-slate-800 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-full bg-nasa-brightBlue/20 text-nasa-brightBlue flex items-center justify-center font-bold">
+                        <i class="fa-solid fa-robot"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-orbitron font-bold text-xs text-white">AstroBot NASA</h4>
+                        <span class="text-[10px] text-emerald-400 flex items-center gap-1">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> En Línea
+                        </span>
+                    </div>
+                </div>
+                <button onclick="toggleBot()" class="text-slate-400 hover:text-white p-1">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- Messages Area -->
+            <div id="chatMessages" class="flex-grow p-4 overflow-y-auto space-y-3 text-xs">
+                <div class="bg-slate-800 p-3 rounded-xl max-w-[85%] text-slate-200 border border-slate-700">
+                    👋 ¡Hola! Soy <b>AstroBot</b>, tu asistente de compras NASA. ¿En qué puedo ayudarte hoy con tu pedido o proyecto?
+                </div>
+            </div>
+
+            <!-- Input area -->
+            <form onsubmit="sendChatMessage(event)" class="p-3 bg-slate-950 border-t border-slate-800 flex gap-2">
+                <input type="text" id="chatInput" placeholder="Pregunta sobre envíos, pagos, tallas..." class="flex-grow bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-nasa-brightBlue">
+                <button type="submit" class="bg-nasa-blue hover:bg-blue-600 text-white px-3 py-2 rounded-xl text-xs font-semibold transition">
+                    <i class="fa-solid fa-paper-plane"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="bg-slate-950 border-t border-slate-800 py-8 text-center text-xs text-slate-500 mt-auto">
+        <div class="max-w-7xl mx-auto px-4">
+            <p class="font-orbitron tracking-widest text-slate-400 mb-2">NASA ONLINE STORE - PROYECTO UNIVERSITARIO</p>
+            <p>© 2026 Diseñado para fines educativos y académicos. Inspirado en la exploración espacial.</p>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // PRODUCTS DATA CATALOG (Pure product imagery without human models)
+        const products = [
+            {
+                id: 1,
+                name: "Playera NASA Meatball Logo Classic Blue",
+                type: "playera",
+                category: "ropa",
+                price: 499.00,
+                badge: "Meatball Logo",
+                image: "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=600&auto=format&fit=crop&q=80",
+                sizes: ["Chica (S)", "Mediana (M)", "Grande (L)"]
+            },
+            {
+                id: 2,
+                name: "Playera NASA Worm Red Retro Black",
+                type: "playera",
+                category: "ropa",
+                price: 549.00,
+                badge: "Worm Logo",
+                image: "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=600&auto=format&fit=crop&q=80",
+                sizes: ["Chica (S)", "Mediana (M)", "Grande (L)"]
+            },
+            {
+                id: 3,
+                name: "Playera Misión Artemis Moon Vector",
+                type: "playera",
+                category: "ropa",
+                price: 599.00,
+                badge: "Artemis Official",
+                image: "https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=600&auto=format&fit=crop&q=80",
+                sizes: ["Chica (S)", "Mediana (M)", "Grande (L)"]
+            },
+            {
+                id: 4,
+                name: "Sudadera NASA Deep Space Hoodie",
+                type: "playera",
+                category: "ropa",
+                price: 1299.00,
+                badge: "Meatball Insignia",
+                image: "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?w=600&auto=format&fit=crop&q=80",
+                sizes: ["Chica (S)", "Mediana (M)", "Grande (L)"]
+            },
+            {
+                id: 5,
+                name: "Chaqueta Aviador MA-1 NASA Flight Jacket",
+                type: "accesorios",
+                category: "accesorios",
+                price: 2199.00,
+                badge: "Flight Approved",
+                image: "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=600&auto=format&fit=crop&q=80",
+                sizes: ["Chica (S)", "Mediana (M)", "Grande (L)"]
+            },
+            {
+                id: 6,
+                name: "Chaqueta Cortavientos NASA Technical Windbreaker",
+                type: "accesorios",
+                category: "accesorios",
+                price: 1899.00,
+                badge: "Worm Logo",
+                image: "https://images.unsplash.com/photo-1544441893-675973e31985?w=600&auto=format&fit=crop&q=80",
+                sizes: ["Chica (S)", "Mediana (M)", "Grande (L)"]
+            },
+            {
+                id: 7,
+                name: "Pantalón Jogger Space Training Tactical",
+                type: "pantalon",
+                category: "ropa",
+                price: 980.00,
+                badge: "NASA Crew Gear",
+                image: "https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?w=600&auto=format&fit=crop&q=80",
+                sizes: ["Chica (S)", "Mediana (M)", "Grande (L)"]
+            },
+            {
+                id: 8,
+                name: "Pantalón Cargo NASA Astronaut Edition",
+                type: "pantalon",
+                category: "ropa",
+                price: 1250.00,
+                badge: "Artemis Spec",
+                image: "https://images.unsplash.com/photo-1517445312882-bc9910d016b7?w=600&auto=format&fit=crop&q=80",
+                sizes: ["Chica (S)", "Mediana (M)", "Grande (L)"]
+            },
+            {
+                id: 9,
+                name: "Tenis NASA Moonwalker Sneaker Red/White",
+                type: "calzado",
+                category: "calzado",
+                price: 2499.00,
+                badge: "NASA Insignia",
+                image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600&auto=format&fit=crop&q=80",
+                sizes: ["24 MX", "25 MX", "26 MX", "27 MX", "28 MX", "29 MX"]
+            },
+            {
+                id: 10,
+                name: "Tenis NASA Orbit Runner White Tech",
+                type: "calzado",
+                category: "calzado",
+                price: 2199.00,
+                badge: "Apollo Edition",
+                image: "https://images.unsplash.com/photo-1608231387042-66d1773070a5?w=600&auto=format&fit=crop&q=80",
+                sizes: ["24 MX", "25 MX", "26 MX", "27 MX", "28 MX", "29 MX"]
+            },
+            {
+                id: 11,
+                name: "Tenis NASA Mars Spec Runner",
+                type: "calzado",
+                category: "calzado",
+                price: 2699.00,
+                badge: "Worm Logo",
+                image: "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=600&auto=format&fit=crop&q=80",
+                sizes: ["24 MX", "25 MX", "26 MX", "27 MX", "28 MX", "29 MX"]
+            },
+            {
+                id: 12,
+                name: "Botas Espaciales Apollo High-Tech",
+                type: "calzado",
+                category: "calzado",
+                price: 3100.00,
+                badge: "Lunar Boots",
+                image: "https://images.unsplash.com/photo-1549298916-b41d501d3772?w=600&auto=format&fit=crop&q=80",
+                sizes: ["24 MX", "25 MX", "26 MX", "27 MX", "28 MX", "29 MX"]
+            },
+            {
+                id: 13,
+                name: "Mochila NASA Commuter Space Pack",
+                type: "accesorios",
+                category: "accesorios",
+                price: 1399.00,
+                badge: "Official Gear",
+                image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=600&auto=format&fit=crop&q=80",
+                sizes: ["Unitalla"]
+            },
+            {
+                id: 14,
+                name: "Gorra NASA Mission Artemis Cap",
+                type: "accesorios",
+                category: "accesorios",
+                price: 450.00,
+                badge: "Worm Embroidered",
+                image: "https://images.unsplash.com/photo-1588850561407-ed78c282e89b?w=600&auto=format&fit=crop&q=80",
+                sizes: ["Unitalla"]
+            }
+        ];
+
+        // CART STATE
+        let cart = [];
+        let selectedSizes = {};
+
+        // INITIAL RENDER
+        window.onload = function() {
+            renderProducts(products);
+            updateCartUI();
+        };
+
+        // RENDER PRODUCTS GRID WITH NASA LOGOS & BADGES
+        function renderProducts(items) {
+            const grid = document.getElementById('productGrid');
+            grid.innerHTML = '';
+
+            items.forEach(product => {
+                if (!selectedSizes[product.id]) {
+                    selectedSizes[product.id] = product.sizes[0];
+                }
+
+                const card = document.createElement('div');
+                card.className = "bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden hover:border-nasa-brightBlue/50 transition duration-300 flex flex-col justify-between shadow-lg group relative";
+                
+                card.innerHTML = `
+                    <div>
+                        <div class="relative overflow-hidden h-56 bg-slate-950 p-2 flex items-center justify-center">
+                            <img src="${product.image}" alt="${product.name}" class="w-full h-full object-contain group-hover:scale-105 transition duration-500" onerror="this.src='https://placehold.co/600x400/0f172a/00D8FF?text=NASA+Gear'">
+                            
+                            <!-- NASA Official Badge Overlay -->
+                            <div class="absolute top-3 left-3 bg-slate-950/90 backdrop-blur-md px-2 py-1 rounded-lg border border-nasa-brightBlue/40 flex items-center gap-1.5 shadow-md">
+                                <div class="w-4 h-4 rounded-full bg-nasa-blue flex items-center justify-center text-[7px] font-black text-white">N</div>
+                                <span class="text-[10px] font-bold text-slate-200 tracking-wider">${product.badge}</span>
+                            </div>
+
+                            <span class="absolute top-3 right-3 bg-slate-950/80 backdrop-blur-md px-2.5 py-1 rounded-md text-[10px] font-bold tracking-wider text-nasa-brightBlue border border-nasa-brightBlue/30 uppercase">
+                                ${product.category}
+                            </span>
+                        </div>
+                        <div class="p-5">
+                            <div class="flex items-center gap-2 mb-1.5">
+                                <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-nasa-blue/30 text-nasa-brightBlue border border-nasa-blue/50 uppercase">NASA Official</span>
+                            </div>
+                            <h3 class="font-bold text-white text-base mb-1 group-hover:text-nasa-brightBlue transition line-clamp-2">${product.name}</h3>
+                            <p class="font-orbitron font-extrabold text-nasa-brightBlue text-lg mb-4">$${product.price.toFixed(2)} MXN</p>
+                            
+                            <!-- Size Selector -->
+                            <div class="mb-4">
+                                <label class="block text-xs font-semibold text-slate-400 mb-1.5 uppercase tracking-wider">
+                                    ${product.category === 'calzado' ? 'Talla Calzado (MX):' : 'Talla Ropa:'}
+                                </label>
+                                <div class="flex flex-wrap gap-1.5">
+                                    ${product.sizes.map(size => `
+                                        <button onclick="selectSize(${product.id}, '${size}')" 
+                                            id="size-btn-${product.id}-${size.replace(/[^a-zA-Z0-9]/g, '')}"
+                                            class="size-btn-${product.id} text-xs px-2.5 py-1.5 rounded-lg font-semibold border transition ${selectedSizes[product.id] === size ? 'bg-nasa-blue border-nasa-brightBlue text-white' : 'bg-slate-950 border-slate-800 text-slate-400 hover:border-slate-600'}">
+                                            ${size}
+                                        </button>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="p-5 pt-0">
+                        <button onclick="addToCart(${product.id})" class="w-full py-2.5 bg-slate-800 hover:bg-nasa-blue text-white rounded-xl text-xs font-bold transition flex items-center justify-center gap-2 group-hover:shadow-lg group-hover:shadow-nasa-blue/30">
+                            <i class="fa-solid fa-plus"></i> Agregar a la Cesta
+                        </button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // HANDLE SIZE SELECTION
+        function selectSize(productId, size) {
+            selectedSizes[productId] = size;
+            const buttons = document.querySelectorAll(`.size-btn-${productId}`);
+            buttons.forEach(btn => {
+                btn.className = btn.className.replace('bg-nasa-blue border-nasa-brightBlue text-white', 'bg-slate-950 border-slate-800 text-slate-400 hover:border-slate-600');
+            });
+            const targetId = `size-btn-${productId}-${size.replace(/[^a-zA-Z0-9]/g, '')}`;
+            const selectedBtn = document.getElementById(targetId);
+            if(selectedBtn) {
+                selectedBtn.className = selectedBtn.className.replace('bg-slate-950 border-slate-800 text-slate-400 hover:border-slate-600', 'bg-nasa-blue border-nasa-brightBlue text-white');
+            }
+        }
+
+        // FILTER PRODUCTS
+        function filterProducts(filterCategory) {
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                if (btn.dataset.filter === filterCategory) {
+                    btn.className = "filter-btn active px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition bg-nasa-blue text-white";
+                } else {
+                    btn.className = "filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold text-slate-400 hover:text-white transition";
+                }
+            });
+
+            if (filterCategory === 'all') {
+                renderProducts(products);
+            } else if (filterCategory === 'ropa') {
+                renderProducts(products.filter(p => p.category === 'ropa'));
+            } else if (filterCategory === 'calzado') {
+                renderProducts(products.filter(p => p.category === 'calzado'));
+            } else if (filterCategory === 'accesorios') {
+                renderProducts(products.filter(p => p.category === 'accesorios'));
+            } else {
+                renderProducts(products.filter(p => p.type === filterCategory));
+            }
+        }
+
+        // CART LOGIC
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            const size = selectedSizes[productId];
+
+            const existingIndex = cart.findIndex(item => item.id === productId && item.size === size);
+
+            if (existingIndex > -1) {
+                cart[existingIndex].quantity += 1;
+            } else {
+                cart.push({
+                    ...product,
+                    size: size,
+                    quantity: 1
+                });
+            }
+
+            updateCartUI();
+            toggleCart(true);
+        }
+
+        function changeQuantity(index, delta) {
+            cart[index].quantity += delta;
+            if (cart[index].quantity <= 0) {
+                cart.splice(index, 1);
+            }
+            updateCartUI();
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const list = document.getElementById('cartItemsList');
+            const cartCount = document.getElementById('cartCount');
+            const subtotalEl = document.getElementById('cartSubtotal');
+            const taxEl = document.getElementById('cartTax');
+            const totalEl = document.getElementById('cartTotal');
+            const btnProceed = document.getElementById('btnProceedToPay');
+
+            const totalItems = cart.reduce((acc, item) => acc + item.quantity, 0);
+            cartCount.textContent = totalItems;
+
+            if (cart.length === 0) {
+                list.innerHTML = `
+                    <div class="text-center py-12 text-slate-500">
+                        <i class="fa-solid fa-basket-shopping text-4xl mb-3 opacity-30"></i>
+                        <p class="text-sm">Tu cesta está vacía</p>
+                    </div>
+                `;
+                subtotalEl.textContent = '$0.00 MXN';
+                taxEl.textContent = '$0.00 MXN';
+                totalEl.textContent = '$0.00 MXN';
+                btnProceed.disabled = true;
+                return;
+            }
+
+            btnProceed.disabled = false;
+            list.innerHTML = '';
+
+            let subtotal = 0;
+
+            cart.forEach((item, idx) => {
+                const itemTotal = item.price * item.quantity;
+                subtotal += itemTotal;
+
+                const itemEl = document.createElement('div');
+                itemEl.className = "flex items-center gap-3 bg-slate-950 p-3 rounded-xl border border-slate-800";
+                itemEl.innerHTML = `
+                    <img src="${item.image}" class="w-14 h-14 object-contain rounded-lg bg-slate-900 p-1" onerror="this.src='https://placehold.co/100?text=Gear'">
+                    <div class="flex-grow">
+                        <h4 class="text-xs font-bold text-white line-clamp-1">${item.name}</h4>
+                        <span class="text-[10px] text-nasa-brightBlue font-semibold">Talla: ${item.size}</span>
+                        <div class="text-xs font-orbitron font-semibold text-slate-300 mt-1">$${item.price.toFixed(2)}</div>
+                    </div>
+                    <div class="flex flex-col items-end gap-1">
+                        <button onclick="removeFromCart(${idx})" class="text-xs text-slate-500 hover:text-nasa-red transition">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                        <div class="flex items-center border border-slate-800 rounded-lg bg-slate-900">
+                            <button onclick="changeQuantity(${idx}, -1)" class="px-2 py-0.5 text-xs text-slate-400 hover:text-white">-</button>
+                            <span class="px-2 text-xs font-semibold text-white">${item.quantity}</span>
+                            <button onclick="changeQuantity(${idx}, 1)" class="px-2 py-0.5 text-xs text-slate-400 hover:text-white">+</button>
+                        </div>
+                    </div>
+                `;
+                list.appendChild(itemEl);
+            });
+
+            const tax = subtotal * 0.16;
+            const total = subtotal + tax;
+
+            subtotalEl.textContent = `$${subtotal.toFixed(2)} MXN`;
+            taxEl.textContent = `$${tax.toFixed(2)} MXN`;
+            totalEl.textContent = `$${total.toFixed(2)} MXN`;
+        }
+
+        function toggleCart(forceOpen = false) {
+            const modal = document.getElementById('cartModal');
+            if (forceOpen || modal.classList.contains('invisible')) {
+                modal.classList.remove('invisible', 'opacity-0');
+            } else {
+                modal.classList.add('invisible', 'opacity-0');
+            }
+        }
+
+        // CHECKOUT & RANDOM DATA GENERATION
+        function openCheckout() {
+            toggleCart();
+            document.getElementById('checkoutModal').classList.remove('hidden');
+        }
+
+        function closeCheckout() {
+            document.getElementById('checkoutModal').classList.add('hidden');
+        }
+
+        function fillRandomData() {
+            const names = [
+                "Dr. Carlos Noriega", "Ing. Ellen Ochoa", "Astronauta Mateo Silva", 
+                "Dra. Sofía Mendoza", "Comandante Alex Vance", "Dra. Valentina Tereshkova"
+            ];
+            
+            const randomName = names[Math.floor(Math.random() * names.length)];
+            const randomCard = "4" + Array.from({length: 15}, () => Math.floor(Math.random() * 10)).join('');
+            const formattedCard = randomCard.match(/.{1,4}/g).join(' ');
+            
+            document.getElementById('cardName').value = randomName;
+            document.getElementById('cardNumber').value = formattedCard;
+            document.getElementById('cardExp').value = "12/28";
+            document.getElementById('cardCVV').value = "888";
+        }
+
+        // PROCESS PAYMENT & INVOICE
+        function processPayment(event) {
+            event.preventDefault();
+
+            const cardName = document.getElementById('cardName').value;
+            const cardNumber = document.getElementById('cardNumber').value;
+            const paymentType = document.querySelector('input[name="paymentType"]:checked').value;
+            
+            const maskedCard = cardNumber.length >= 4 
+                ? '**** **** **** ' + cardNumber.replace(/\s+/g, '').slice(-4) 
+                : '**** **** **** 1234';
+
+            let subtotal = cart.reduce((acc, item) => acc + (item.price * item.quantity), 0);
+            let tax = subtotal * 0.16;
+            let total = subtotal + tax;
+
+            const dateStr = new Date().toLocaleDateString('es-MX', {
+                year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit'
+            });
+            const invoiceNum = 'NASA-INV-' + Math.floor(100000 + Math.random() * 900000);
+
+            const invoiceContent = document.getElementById('invoiceContent');
+            invoiceContent.innerHTML = `
+                <div class="border-b pb-6 flex justify-between items-start">
+                    <div>
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="font-orbitron font-black text-2xl text-slate-900 tracking-wider">NASA</span>
+                            <span class="text-xs font-bold uppercase tracking-widest text-slate-500">Official Store</span>
+                        </div>
+                        <p class="text-xs text-slate-500">National Aeronautics and Space Administration</p>
+                        <p class="text-xs text-slate-500">RFC: NAS-010101-SP3 | Proyecto Académico</p>
+                    </div>
+                    <div class="text-right">
+                        <span class="inline-block px-3 py-1 bg-emerald-100 text-emerald-800 text-xs font-bold rounded-full mb-2">PAGADO</span>
+                        <h4 class="font-orbitron font-bold text-lg text-slate-800">${invoiceNum}</h4>
+                        <p class="text-xs text-slate-500">Fecha: ${dateStr}</p>
+                    </div>
+                </div>
+
+                <!-- Customer Details -->
+                <div class="grid grid-cols-2 gap-4 bg-slate-50 p-4 rounded-xl text-xs">
+                    <div>
+                        <span class="text-slate-400 font-semibold block uppercase">Cliente:</span>
+                        <span class="font-bold text-slate-800 text-sm">${cardName}</span>
+                    </div>
+                    <div>
+                        <span class="text-slate-400 font-semibold block uppercase">Método de Pago:</span>
+                        <span class="font-bold text-slate-800">${paymentType} (${maskedCard})</span>
+                    </div>
+                </div>
+
+                <!-- Items Breakdown -->
+                <div>
+                    <h5 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3">Detalle de Productos</h5>
+                    <table class="w-full text-left text-xs border-collapse">
+                        <thead>
+                            <tr class="border-b border-slate-200 text-slate-400 uppercase">
+                                <th class="py-2">Producto / Talla</th>
+                                <th class="py-2 text-center">Cant.</th>
+                                <th class="py-2 text-right">Precio U.</th>
+                                <th class="py-2 text-right">Importe</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100">
+                            ${cart.map(item => `
+                                <tr>
+                                    <td class="py-3 font-medium text-slate-800">
+                                        ${item.name}
+                                        <span class="block text-[10px] text-slate-400">Talla: ${item.size}</span>
+                                    </td>
+                                    <td class="py-3 text-center text-slate-600">${item.quantity}</td>
+                                    <td class="py-3 text-right text-slate-600">$${item.price.toFixed(2)}</td>
+                                    <td class="py-3 text-right font-semibold text-slate-800">$${(item.price * item.quantity).toFixed(2)}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Financial Summary -->
+                <div class="border-t pt-4 space-y-2 text-xs">
+                    <div class="flex justify-between text-slate-600">
+                        <span>Subtotal:</span>
+                        <span class="font-semibold">$${subtotal.toFixed(2)} MXN</span>
+                    </div>
+                    <div class="flex justify-between text-slate-600">
+                        <span>IVA Trasladado (16%):</span>
+                        <span class="font-semibold">$${tax.toFixed(2)} MXN</span>
+                    </div>
+                    <div class="flex justify-between text-base font-bold text-slate-900 pt-2 border-t">
+                        <span>Total Pagado:</span>
+                        <span class="text-nasa-blue">$${total.toFixed(2)} MXN</span>
+                    </div>
+                </div>
+
+                <!-- Footer Note -->
+                <div class="text-center pt-6 text-[10px] text-slate-400 border-t">
+                    <p>Gracias por tu compra en la tienda oficial NASA (Simulación Universitaria).</p>
+                    <p>Este documento sirve como comprobante de pago digital comprobatorio del IVA del 16%.</p>
+                </div>
+            `;
+
+            closeCheckout();
+            document.getElementById('invoiceModal').classList.remove('hidden');
+
+            cart = [];
+            updateCartUI();
+        }
+
+        function closeInvoice() {
+            document.getElementById('invoiceModal').classList.add('hidden');
+        }
+
+        // ASTROBOT CHATBOT LOGIC
+        function toggleBot() {
+            const win = document.getElementById('botWindow');
+            win.classList.toggle('hidden');
+        }
+
+        function openBot() {
+            const win = document.getElementById('botWindow');
+            win.classList.remove('hidden');
+        }
+
+        function sendChatMessage(e) {
+            e.preventDefault();
+            const input = document.getElementById('chatInput');
+            const msg = input.value.trim();
+            if(!msg) return;
+
+            const chatMessages = document.getElementById('chatMessages');
+
+            const userBubble = document.createElement('div');
+            userBubble.className = "bg-nasa-blue text-white p-3 rounded-xl max-w-[85%] ml-auto text-xs";
+            userBubble.textContent = msg;
+            chatMessages.appendChild(userBubble);
+
+            input.value = '';
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            setTimeout(() => {
+                const botBubble = document.createElement('div');
+                botBubble.className = "bg-slate-800 p-3 rounded-xl max-w-[85%] text-slate-200 border border-slate-700 text-xs";
+                botBubble.innerHTML = getBotReply(msg.toLowerCase());
+                chatMessages.appendChild(botBubble);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }, 400);
+        }
+
+        function getBotReply(query) {
+            if (query.includes('talla') || query.includes('medida')) {
+                return "📏 <b>Guía de Tallas:</b><br>- <b>Ropa, Sudaderas y Chaquetas:</b> Chica (S), Mediana (M) y Grande (L).<br>- <b>Calzado:</b> Del 24 MX al 29 MX.<br>- <b>Accesorios:</b> Unitalla.";
+            } else if (query.includes('sudadera') || query.includes('hoodie') || query.includes('ropa') || query.includes('chaqueta')) {
+                return "🧥 <b>Colección NASA:</b> Contamos con camisetas, hoodies, chamarras bomber, joggers y tenis aprobados para la misión urbana.";
+            } else if (query.includes('pago') || query.includes('tarjeta') || query.includes('credito') || query.includes('debito')) {
+                return "💳 <b>Pasarela de Pago:</b> Aceptamos Débito y Crédito. Puedes usar el botón <b>'Datos Aleatorios'</b> para autocompletar rápidamente en tu demostración académica.";
+            } else if (query.includes('factura') || query.includes('iva') || query.includes('imprimir')) {
+                return "📄 <b>Facturación:</b> Generamos una factura desglosada con el 16% de IVA e incluimos un botón directo para <b>imprimir en PDF o papel</b>.";
+            } else if (query.includes('hola') || query.includes('buenas') || query.includes('ayuda')) {
+                return "¡Hola astronauta! 👨‍🚀 Estoy listo para ayudarte con productos, tallas, pagos y facturas.";
+            } else {
+                return "🤖 Puedo asesorarte sobre <b>productos</b>, <b>tallas (S/M/L y 24-29 MX)</b>, <b>tarjetas de crédito/débito</b> y <b>generación de facturas con 16% IVA</b>.";
+            }
+        }
+    </script>
+</body>
+</html>
